@@ -3229,14 +3229,21 @@ mark(); scan(document.body);
 })();
 </script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <script>
 (function(){
+  const inTG = !!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData);
+  if (!inTG) return;                       // normal browser e demo ad-i cholbe
   try { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } catch(e){}
   const REWARD_BLOCK = '52407';
   const INTER_BLOCK  = 'int-52408';
-  const make = id => { try { return window.Adsgram ? window.Adsgram.init({ blockId:id }) : null; } catch(e){ return null; } };
-  const rewardCtl = make(REWARD_BLOCK), interCtl = make(INTER_BLOCK);
+  let rewardCtl = null, interCtl = null;
+  const s = document.createElement('script');
+  s.src = 'https://sad.adsgram.ai/js/sad.min.js';
+  s.onload = () => {
+    try { rewardCtl = window.Adsgram.init({ blockId: REWARD_BLOCK }); } catch(e){}
+    try { interCtl  = window.Adsgram.init({ blockId: INTER_BLOCK }); } catch(e){}
+  };
+  document.head.appendChild(s);
   const sim = window.showAdMobModal;
   window.showAdMobModal = function(type, cb){
     const c = type === 'REWARDED' ? rewardCtl : interCtl;
