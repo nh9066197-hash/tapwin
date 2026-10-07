@@ -3227,5 +3227,29 @@ if(rows.length){
 }
 mark(); scan(document.body);
 })();
+</script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<script>
+(function(){
+  try { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } catch(e){}
+  const REWARD_BLOCK = '52407';
+  const INTER_BLOCK  = 'int-52408';
+  const make = id => { try { return window.Adsgram ? window.Adsgram.init({ blockId:id }) : null; } catch(e){ return null; } };
+  const rewardCtl = make(REWARD_BLOCK), interCtl = make(INTER_BLOCK);
+  const sim = window.showAdMobModal;
+  window.showAdMobModal = function(type, cb){
+    const c = type === 'REWARDED' ? rewardCtl : interCtl;
+    if (!c) return sim(type, cb);
+    c.show().then(r => {
+      if (type === 'REWARDED') { if (r && r.done && cb) cb(); }
+      else if (cb) cb();
+    }).catch(() => {
+      if (type === 'REWARDED') showToast('Ad pawa jayni', 'Kichukkhon por abar chesta korun');
+      else if (cb) cb();
+    });
+  };
+})();
+</script>
 </body>
 </html>
