@@ -3258,5 +3258,19 @@ mark(); scan(document.body);
   };
 })();
 </script>
+<script>
+(function(){
+  const fix = () => {
+    const q = s => document.querySelector(s);
+    const t = q('#admobOverlay .ad-tag'); if (t) t.textContent = 'ADVERTISEMENT';
+    const h = q('#admobOverlay .ad-center h3'); if (h) h.textContent = 'Watch this ad to get your reward';
+    const p = q('#admobOverlay .ad-center p'); if (p) p.textContent = 'Watching ads is optional. The ad closes in a few seconds.';
+    const b = q('#admobOverlay .ad-btn'); if (b) b.style.display = 'none';
+    const n = q('#tab-settings .note'); if (n) n.textContent = 'Watching ads is optional and only gives bonus coins. All games are fully playable without ads.';
+    const bn = q('.ad-banner'); if (bn) bn.style.display = 'none';
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix); else fix();
+})();
+</script>
 </body>
 </html>
